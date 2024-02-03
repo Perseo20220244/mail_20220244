@@ -1,70 +1,100 @@
+import 'dart:html';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(const MailList());
+void main() => runApp(const CupertinoList());
 
-class MailList extends StatelessWidget {
-  const MailList({super.key});
+class CupertinoList extends StatelessWidget {
+  const CupertinoList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(useMaterial3: true),
-      home: const ViewList(),
+    return const CupertinoApp(
+      home: ListSectionInsetExample(),
       debugShowCheckedModeBanner: false,
+      theme: CupertinoThemeData(
+          brightness: Brightness.light), // Configura el tema claro
     );
   }
 }
 
-class ViewList extends StatelessWidget {
-  const ViewList({super.key});
+class ListSectionInsetExample extends StatelessWidget {
+  const ListSectionInsetExample({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mailboxes'),
-      ),
-      body: ListView(
-        children: const <Widget>[
-          Card(
-              child: ListTile(
-            leading: Icon(color: Colors.blue, Icons.calendar_month),
-            title: Text('Today'),
-            trailing: Icon(Icons.arrow_forward_ios_rounded),
-          )),
-          Card(
-              child: ListTile(
-                  leading: Icon(
-                      color: Colors.blue, Icons.mark_email_unread_outlined),
-                  title: Text('Unread'),
-                  trailing: Icon(Icons.arrow_forward_ios_rounded))),
-          Card(
-              child: ListTile(
-                  leading: Icon(color: Colors.blue, Icons.inbox),
-                  title: Text('Inbox'),
-                  trailing: Icon(Icons.arrow_forward_ios_rounded))),
-          Card(
-              child: ListTile(
-                  leading: Icon(color: Colors.blue, Icons.archive_outlined),
-                  title: Text('Archive'),
-                  trailing: Icon(Icons.arrow_forward_ios_rounded))),
-          Card(
-              child: ListTile(
-                  leading:
-                      Icon(color: Colors.blue, Icons.delete_forever_outlined),
-                  title: Text('Junk'),
-                  trailing: Icon(Icons.arrow_forward_ios_rounded))),
-          Card(
-              child: ListTile(
-                  leading: Icon(color: Colors.blue, Icons.delete_outline),
-                  title: Text('Trash'),
-                  trailing: Icon(Icons.arrow_forward_ios_rounded))),
+    return CupertinoPageScaffold(
+      child: CupertinoListSection.insetGrouped(
+        header: const Text(
+          'Mailboxes',
+          style: TextStyle(fontSize: 34.0),
+        ),
+        footer: const CupertinoListTile(
+          title: Text(
+            'iCloud',
+            style: TextStyle(fontSize: 24.0),
+          ),
+          trailing: CupertinoListTileChevron(),
+          onTap: null,
+        ),
+        children: <CupertinoListTile>[
+          CupertinoListTile.notched(
+            title: const Text('Today'),
+            leading: const Icon(color: Colors.blue, Icons.calendar_month),
+            trailing: const CupertinoListTileChevron(),
+            onTap: () => Navigator.of(context).push(
+              CupertinoPageRoute<void>(
+                builder: (BuildContext context) {
+                  return const _SecondPage(text: 'flutter sapbeeee');
+                },
+              ),
+            ),
+          ),
+          const CupertinoListTile.notched(
+            title: Text('Unread'),
+            leading: Icon(color: Colors.blue, Icons.mark_email_unread_outlined),
+            trailing: CupertinoListTileChevron(),
+          ),
+          const CupertinoListTile.notched(
+            title: Text('Inbox'),
+            leading: Icon(color: Colors.blue, Icons.inbox),
+            trailing: CupertinoListTileChevron(),
+          ),
+          const CupertinoListTile.notched(
+            title: Text('Archive'),
+            leading: Icon(color: Colors.blue, Icons.archive_outlined),
+            trailing: CupertinoListTileChevron(),
+          ),
+          const CupertinoListTile.notched(
+            title: Text('Junk'),
+            leading: Icon(color: Colors.blue, Icons.delete_forever_outlined),
+            additionalInfo: Text('9'),
+            trailing: CupertinoListTileChevron(),
+          ),
+          const CupertinoListTile.notched(
+            title: Text('Trash'),
+            leading: Icon(color: Colors.blue, Icons.delete_outline),
+            additionalInfo: Text('28'),
+            trailing: CupertinoListTileChevron(),
+          ),
         ],
       ),
-      bottomNavigationBar: const BottomAppBar(
-          child: Center(
-        child: Text('Updated Just Now'),
-      )),
+    );
+  }
+}
+
+class _SecondPage extends StatelessWidget {
+  const _SecondPage({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      child: Center(
+        child: Text(text),
+      ),
     );
   }
 }
